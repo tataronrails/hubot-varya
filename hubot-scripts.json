@@ -1,1 +1,15 @@
-["redis-brain.coffee", "shipit.coffee"]
+[
+	"redis-brain.coffee",
+	"shipit.coffee",
+	"9gag.coffee",
+	"beerme.coffee",
+	"birthday.coffee",
+	"carlton.coffee",
+	"chuck-norris.coffee",
+	"deadline.coffee",
+	"gangnam.coffee",
+	"good-night.coffee",
+	"grumpycat.coffee",
+	"hello.coffee",
+	"nice.coffee"
+]
