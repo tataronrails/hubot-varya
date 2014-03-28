@@ -25,11 +25,11 @@
     "hubot-hipchat": "^2.6.4",
     "htmlparser": "1.7.6",
     "soupselect": "0.2.0",
-    "jsdom": "latest",
-    "jquery": "latest",
-    "querystring": "0.1.0",
+    "jsdom": "0.10.4",
+    "jquery": "1.11.0",
     "xml2js": "0.2.0",
-    "underscore": "*"
+    "underscore": "1.6.0",
+    "moment": "2.5.1"
   },
   "engines": {
     "node": ">= 0.8.x",
