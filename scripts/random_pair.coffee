@@ -32,20 +32,21 @@ class PairProgramming
     @pairs = @data.pp.pairs
     @users = @data.pp.users
 
-  generateTodayPair: (count = 0) ->
+  generateTodayPair: (all_users, force = false, count = 0) ->
     if count < 50
       random_pair = _.sample(@users, 2)
       records = @getRecordsAmountWeek()
       result = true
-      for record in records
-        if _.difference(random_pair, record).length is 0
-          result = false
-          break
+      unless force
+        for record in records
+          if _.difference(random_pair, record).length is 0
+            result = false
+            break
       if result
         @addRecord(random_pair)
-        @todayPairMessage(random_pair)
+        @todayPairMessage(all_users, random_pair)
       else
-        @generateTodayPair(++count)
+        @generateTodayPair(all_users, force, ++count)
     else
       'Not found uniq pair'
 
@@ -124,21 +125,24 @@ module.exports = (robot) ->
     pp = new PairProgramming(robot.brain.data)
     robot.brain.setAutoSave true
 
-  robot.respond /pp pairs today$/i, (msg) ->
+  robot.respond /pp pairs today\s*$/i, (msg) ->
     if pp.checkTodayPairPresent()
       today_pair = _.last(pp.pairs)
       msg.send pp.todayPairMessage(robot.brain.data.users, _.rest(today_pair))
     else
-      msg.send pp.generateTodayPair()
+      msg.send pp.generateTodayPair(robot.brain.data.users)
 
-  robot.respond /pp pairs$/i, (msg) ->
+  robot.respond /pp another pair\s*$/i, (msg) ->
+    msg.send pp.generateTodayPair(robot.brain.data.users, true)
+
+  robot.respond /pp pairs\s*$/i, (msg) ->
     msg.send pp.getPairs(robot.brain.data.users)
 
-  robot.respond /pp users$/i, (msg) ->
+  robot.respond /pp users\s*$/i, (msg) ->
     msg.send pp.getUsers(robot.brain.data.users)
 
-  robot.respond /pp add user @((?:\d+)?\w+(?:\d+)?)$/i, (msg) ->
+  robot.respond /pp add user @((?:\d+)?\w+(?:\d+)?)\s*$/i, (msg) ->
     msg.send pp.addUser(robot.brain.data.users, msg.match[1])
 
-  robot.respond /pp remove user @((?:\d+)?\w+(?:\d+)?)$/i, (msg) ->
+  robot.respond /pp remove user @((?:\d+)?\w+(?:\d+)?)\s*$/i, (msg) ->
     msg.send pp.removeUser(robot.brain.data.users, msg.match[1])
